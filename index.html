@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexey Balz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Alexey Balz</h1>
+    </header>
+    <main>
+        <p>Welcome to my website! Here You can learn more about my experience and skills.</p>
+        <p>You can also connect with me on <a href="https://www.linkedin.com/in/alexeyobukhov/">LinkedIn</a>.</p>
+        <p>Check out my GitHub account on <a href="https://github.com/alexey-balz/alexey-balz" target="_blank">GitHub</a>.</p>
+        <p><a href="cv.html" target="_blank">View and Download CV</a></p>
+
+        <p>Learn about my collaboration with AI for mental well-being support: <a href="ai-collaboration-statement.html" target="_blank">AI Collaboration Statement</a></p>
+        <details>
+            <summary>Recent Projects</summary>
+            <p>This is a brief description of my most recent projects. Showcase my skills and accomplishments related to these projects.</p>
+            <iframe src="projects/projects.html" style="width: 100%; height: 100vh;" id="project_frame"></iframe>
+            </details>
+    </main>
+    <div id="footer">
+        <p>&copy; <span id="currentYear"></span> Alexey Balz</p>
+    </div>
+
+    <script>
+        // Get the current year
+        var currentYear = new Date().getFullYear();
+
+        // Update the content of the 'currentYear' span element
+        document.getElementById('currentYear').textContent = currentYear;
+    </script>
+</body>
+</html>
