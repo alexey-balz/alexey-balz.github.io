@@ -31,7 +31,7 @@ sudo docker-compose down
 - http://localhost:8080/cv.html
 
 **From Your Smartphone (same WiFi network):**
-- http://192.168.2.152:8080/cv.html
+- http://{YOUR_PC_IP}:8080/cv.html
 - Auto-detects device and connects to API
 
 ---
