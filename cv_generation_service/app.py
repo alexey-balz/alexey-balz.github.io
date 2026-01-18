@@ -69,7 +69,7 @@ def prepare_tex_content(template_path, title):
     except Exception as e:
         raise CVGenerationError(f"Failed to read template: {str(e)}")
 
-
+# P5rLAF6Gr6wjRn3EuS5c
 def generate_pdf(template_path, output_filename, working_dir):
     """
     Compile LaTeX template to PDF using pdflatex.
