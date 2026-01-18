@@ -118,7 +118,7 @@ def generate_cv(template_name='resume_balz', title='CV', output_dir=None):
     Args:
         template_name: Name of the template (without .tex extension)
         title: Title for the CV document
-        output_dir: Directory to save the PDF (defaults to ./output/)
+        output_dir: Directory to save the PDF (defaults to ./cv_output/)
     
     Returns:
         Path to the generated PDF file
@@ -127,9 +127,9 @@ def generate_cv(template_name='resume_balz', title='CV', output_dir=None):
     templates_dir = base_dir / 'templates'
     temp_dir = None
     
-    # Set default output directory
+    # Set default output directory (use cv_output to avoid permission issues)
     if output_dir is None:
-        output_dir = base_dir / 'output'
+        output_dir = base_dir / 'cv_output'
     else:
         output_dir = Path(output_dir)
     
