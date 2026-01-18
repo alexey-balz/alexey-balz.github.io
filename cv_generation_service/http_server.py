@@ -46,6 +46,19 @@ class CVRequestHandler(BaseHTTPRequestHandler):
             self.send_available_templates()
         else:
             self.send_error_response(404, "Endpoint not found")
+
+    def do_HEAD(self):
+        """Handle HEAD requests for quick health checks."""
+        parsed_path = urlparse(self.path)
+        if parsed_path.path == '/health':
+            # Return headers without body
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+        else:
+            self.send_response(404)
+            self.end_headers()
     
     def do_POST(self):
         """Handle POST requests."""
