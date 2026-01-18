@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  cv-generator:
+    build: .
+    container_name: cv-generator
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount output directory for debugging (templates are built into image)
+      - ./output:/tmp/cv_output
+    environment:
+      FLASK_ENV: production
+      TEMPLATES_DIR: /app/templates
+      OUTPUT_DIR: /tmp/cv_output
+      PORT: 5000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

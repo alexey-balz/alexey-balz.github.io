@@ -5,39 +5,388 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View CV - Alexey Balz</title>
     <link rel="stylesheet" href="cv-style.css">
+    <style>
+        #loading {
+            text-align: center;
+            padding: 40px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .hidden {
+            display: none;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        #title-selector {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #dee2e6;
+        }
+        #title-selector h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .title-input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            align-items: flex-end;
+        }
+        #titleInput {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        #titleInput:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+        .title-presets {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .title-preset {
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .title-preset:hover {
+            background-color: #e8f4f8;
+            border-color: #3498db;
+        }
+        .title-preset.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        #actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+        .status {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>View CV - Alexey Balz</h1>
     </header>
     <main>
-        <!-- Embed the PDF using Google Docs Viewer -->
-        <iframe src="https://docs.google.com/viewer?url=https://alexey-balz.github.io/files/cv.pdf&embedded=true" width="100%" height="600px"></iframe>
-        <!-- Download button with JavaScript -->
-        <button id="downloadButton">Download CV</button>
+        <div id="loading" class="hidden">
+            <p>Generating your CV... Please wait.</p>
+            <div class="spinner"></div>
+        </div>
+        
+        <div id="content">
+            <!-- Title Selector Section -->
+            <div id="title-selector">
+                <h3>Customize Your CV Title</h3>
+                <div class="title-input-group">
+                    <input 
+                        type="text" 
+                        id="titleInput" 
+                        placeholder="Enter desired job title (e.g., Senior ML Engineer)" 
+                        value="Python Developer"
+                        maxlength="200"
+                    >
+                    <button id="generateButton" class="btn btn-primary">Generate CV</button>
+                </div>
+                <div class="title-presets">
+                    <span style="font-size: 14px; color: #666; align-self: center; margin-right: 8px;">Quick presets:</span>
+                    <button class="title-preset" data-title="Python Developer">Python Developer</button>
+                    <button class="title-preset" data-title="Senior ML Engineer">Senior ML Engineer</button>
+                    <button class="title-preset" data-title="Data Scientist">Data Scientist</button>
+                    <button class="title-preset" data-title="Full Stack Developer">Full Stack Developer</button>
+                    <button class="title-preset" data-title="Software Engineer">Software Engineer</button>
+                    <button class="title-preset" data-title="DevOps Engineer">DevOps Engineer</button>
+                </div>
+            </div>
+            
+            <!-- PDF Preview -->
+            <div id="pdf-preview">
+                <p>Loading preview...</p>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div id="actions">
+                <button id="downloadButton" class="btn btn-primary">Download CV</button>
+                <button id="refreshButton" class="btn btn-secondary">Refresh PDF</button>
+                <p id="status" class="status hidden"></p>
+            </div>
+        </div>
+        
+        <div id="error" class="error hidden">
+            <p id="error-message"></p>
+            <button id="retryButton" class="btn btn-primary">Retry</button>
+        </div>
     </main>
     <div id="footer">
         <p>&copy; <span id="currentYear"></span> Alexey Balz</p>
     </div>
 
     <script>
+        // Configuration - Auto-detect API endpoint based on hostname
+        // Works from both PC (localhost) and smartphone (network IP)
+        const API_HOST = window.location.hostname;
+        const API_PORT = '5000';
+        const CV_GENERATOR_API = `http://${API_HOST}:${API_PORT}`;
+        const FALLBACK_PDF = 'files/cv.pdf'; // Fallback to static PDF if API is unavailable
+
         // Get the current year
-        var currentYear = new Date().getFullYear();
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Update the content of the 'currentYear' span element
-        document.getElementById('currentYear').textContent = currentYear;
+        // State
+        let currentPdfUrl = null;
+        let currentTitle = 'Python Developer';
 
-        // Download button functionality
-        document.getElementById('downloadButton').addEventListener('click', function() {
-            // Generate a filename with the current date
-            var currentDate = new Date().toISOString().split('T')[0];
-            var filename = 'Alexey_Balz_cv_' + currentDate + '.pdf';
+        /**
+         * Show loading state
+         */
+        function showLoading(show = true) {
+            document.getElementById('loading').classList.toggle('hidden', !show);
+            document.getElementById('content').classList.toggle('hidden', show);
+            document.getElementById('error').classList.add('hidden');
+        }
 
-            // Create a temporary link and trigger the download
-            var link = document.createElement('a');
-            link.href = 'files/cv.pdf';
-            link.download = filename;
-            link.click();
+        /**
+         * Show error message
+         */
+        function showError(message) {
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('content').classList.add('hidden');
+            document.getElementById('loading').classList.add('hidden');
+        }
+
+        /**
+         * Update UI title display
+         */
+        function updateTitleDisplay(title) {
+            document.getElementById('titleInput').value = title;
+            // Update active preset button
+            document.querySelectorAll('.title-preset').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-title') === title);
+            });
+        }
+
+        /**
+         * Generate CV from API with custom title
+         */
+        async function generateCV(title = null) {
+            const titleToUse = title || document.getElementById('titleInput').value.trim();
+            
+            if (!titleToUse) {
+                showError('Please enter a job title');
+                return;
+            }
+
+            currentTitle = titleToUse;
+            updateTitleDisplay(titleToUse);
+            showLoading(true);
+
+            try {
+                const response = await fetch(`${CV_GENERATOR_API}/generate-cv`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: titleToUse,
+                        template: 'resume_balz'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                // Get the filename from Content-Disposition header
+                const contentDisposition = response.headers.get('content-disposition');
+                let filename = `cv_balz_${titleToUse.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+                
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename=([^;]+)/);
+                    if (filenameMatch && filenameMatch[1]) {
+                        filename = filenameMatch[1].replace(/"/g, '').trim();
+                    }
+                }
+
+                // Convert response to blob for preview
+                const pdfBlob = await response.blob();
+                const url = window.URL.createObjectURL(pdfBlob);
+                
+                // Display PDF preview
+                const preview = document.getElementById('pdf-preview');
+                preview.innerHTML = `<iframe src="${url}" style="width: 100%; height: 600px; border: none;"></iframe>`;
+                
+                showLoading(false);
+                document.getElementById('status').classList.add('hidden');
+                
+                // Store title for download
+                currentTitle = titleToUse;
+
+            } catch (error) {
+                console.error('CV generation error:', error);
+                // Fallback to static PDF
+                console.log('Falling back to static PDF...');
+                const preview = document.getElementById('pdf-preview');
+                preview.innerHTML = `<iframe src="${FALLBACK_PDF}" style="width: 100%; height: 600px; border: none;"></iframe>`;
+                showLoading(false);
+                document.getElementById('status').textContent = 'Using cached CV (API unavailable)';
+                document.getElementById('status').classList.remove('hidden');
+            }
+        }
+
+
+        /**
+         * Download PDF with proper filename (optimized for mobile)
+         */
+        function downloadCV() {
+            if (!currentTitle) {
+                alert('Please generate a CV first');
+                return;
+            }
+
+            // Show loading state
+            const originalText = document.getElementById('downloadButton').textContent;
+            document.getElementById('downloadButton').textContent = 'Downloading...';
+            document.getElementById('downloadButton').disabled = true;
+
+            // Use fetch for reliable filename handling
+            fetch(`${CV_GENERATOR_API}/generate-cv`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: currentTitle,
+                    template: 'resume_balz'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Download failed');
+                }
+                
+                // Get filename from Content-Disposition header
+                const contentDisposition = response.headers.get('content-disposition');
+                let filename = `cv_balz_${currentTitle.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+                
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename=([^;]+)/);
+                    if (filenameMatch && filenameMatch[1]) {
+                        filename = filenameMatch[1].replace(/"/g, '').trim();
+                    }
+                }
+                
+                return response.blob().then(blob => ({ blob, filename }));
+            })
+            .then(({ blob, filename }) => {
+                // Create blob URL and download
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                
+                // Reset button state
+                document.getElementById('downloadButton').textContent = originalText;
+                document.getElementById('downloadButton').disabled = false;
+                document.getElementById('status').textContent = `✓ Downloaded: ${filename}`;
+                document.getElementById('status').classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Download error:', error);
+                alert('Download failed. Please try again.');
+                document.getElementById('downloadButton').textContent = originalText;
+                document.getElementById('downloadButton').disabled = false;
+            });
+        }
+
+        // Event listeners
+        document.getElementById('generateButton').addEventListener('click', () => generateCV());
+        document.getElementById('titleInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') generateCV();
+        });
+        
+        document.getElementById('downloadButton').addEventListener('click', downloadCV);
+        document.getElementById('refreshButton').addEventListener('click', () => generateCV(currentTitle));
+        document.getElementById('retryButton').addEventListener('click', () => generateCV());
+
+        // Handle preset buttons
+        document.querySelectorAll('.title-preset').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const title = btn.getAttribute('data-title');
+                generateCV(title);
+            });
+        });
+
+        // Generate CV on page load with default title
+        generateCV();
+
+        // Clean up blob URLs when page unloads
+        window.addEventListener('beforeunload', () => {
+            if (currentPdfUrl && currentPdfUrl.startsWith('blob:')) {
+                URL.revokeObjectURL(currentPdfUrl);
+            }
         });
     </script>
 </body>

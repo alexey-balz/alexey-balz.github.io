@@ -1,0 +1,196 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[left=0.6in, right=0.6in, top=0.6in, bottom=0.6in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+
+% ============ COLORS ============
+\definecolor{primary}{RGB}{0, 51, 102}   % Navy Blue
+\definecolor{accent}{RGB}{80, 80, 80}    % Dark Gray
+\definecolor{text}{RGB}{30, 30, 30}      % Black/Dark Gray
+
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{helvet}
+\usepackage{amssymb}
+\usepackage[colorlinks=true,urlcolor=primary,linkcolor=primary]{hyperref}
+
+\newcommand{\CVTitle}{Python Developer}
+
+% ============ TYPOGRAPHY ============
+\renewcommand{\familydefault}{\sfdefault} % Helvetica (Arial-like)
+\raggedright                            % LEFT ALIGN TEXT (Prevents weird word stretching)
+\linespread{1.1}                        % Improved line spacing
+\setlength{\parindent}{0pt}             % No indentation for paragraphs
+\setlength{\parskip}{0pt}               % No automatic spacing between paragraphs
+
+% ============ SECTION HEADERS ============
+\titleformat{\section}
+  {\Large\bfseries\color{primary}\uppercase} % Format
+  {}{0em}                                    % Label
+  {}                                         % Before
+  [\titlerule]                               % After (Line)
+
+% Spacing: 14pt before section, 8pt after section line
+\titlespacing*{\section}{0pt}{14pt}{8pt}
+
+% ============ CUSTOM MACROS ============
+
+% 1. Header
+\newcommand{\makecvheader}{
+    \noindent
+    \begin{minipage}[c]{0.16\textwidth}
+        \includegraphics[width=\linewidth,height=3cm,keepaspectratio]{profile_pic.jpg}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[c]{0.80\textwidth}
+        \raggedleft
+        {\fontsize{24}{28}\selectfont\bfseries\color{primary} Alexey Balz} \\[4pt]
+        {\Large\color{text} \CVTitle} \\[6pt]
+        {\small\color{text}
+         Dresden, Germany $\;\cdot\;$ +49 176 41032303 \\
+         \href{https://alexey-balz.github.io}{alexey-balz.github.io} $\;\cdot\;$
+         \href{mailto:alexey.balz@gmail.com}{alexey.balz@gmail.com}
+        }
+    \end{minipage}
+    \vspace{6pt}
+}
+
+% 2. Job / Project Entry
+% HYBRID APPROACH: Table for Title/Date, Normal Text for Description
+\newcommand{\entry}[5]{
+    \noindent
+    % The Table: Locks the Title left and Date right
+    \begin{tabularx}{\linewidth}{@{} X r @{}}
+        {\bfseries\large #1} & {\color{primary}\bfseries #3} \\
+        {\color{accent}\itshape #2} & {\color{accent}\small #4}
+    \end{tabularx}
+    \vspace{2pt} % Small gap between Title and Body
+    \par         % End paragraph to switch to normal text mode
+    \noindent    % Ensure body text starts flush left
+    #5           % The body text (or list)
+    \vspace{10pt}% Space after the entry
+}
+
+% 3. Education Entry
+\newcommand{\edu}[4]{
+    \noindent
+    \begin{tabularx}{\linewidth}{@{} X r @{}}
+        {\bfseries #1} & {\color{primary}\bfseries #3} \\
+        {\color{accent} #2} & {}
+    \end{tabularx}
+    \vspace{1pt}
+    \par\noindent
+    {\small #4}
+    \vspace{8pt}
+}
+
+% 4. Tight List Environment
+\newenvironment{bulletlist}{
+    \begin{itemize}
+    \setlength{\leftmargin}{1.2em}
+    \setlength{\labelsep}{0.5em}
+    \setlength{\itemsep}{2pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\topsep}{0pt}
+    \renewcommand{\labelitemi}{\color{primary}\tiny$\blacksquare$}
+}{
+    \end{itemize}
+}
+
+% ============ DOCUMENT CONTENT ============
+\begin{document}
+\color{text}
+
+\makecvheader
+
+% --- PROFILE ---
+\section*{Profile}
+\small
+\noindent
+% This is now STANDARD text. It shares the exact same margins as the Job Titles below.
+Accomplished IT Engineer with over 4 years of experience in Software Testing, Data Analysis, and Python Development. Proven Expertise in Automation Solutions, Data Visualization, and Operational Workflows. Strong Commitment to Quality Assurance and Cross-Functional Collaboration. Focused on ML/NLP Roles. Demonstrated high Empathy through building a Psychological AI Assistant that supports users with care and sensitivity.
+\vspace{10pt} % Manual spacing to match \entry spacing
+
+% --- EMPLOYMENT ---
+\section*{Employment History}
+
+\entry{IT Engineer}{Racyics GmbH}{Nov 2021 -- Present}{Dresden}{
+    \begin{bulletlist}
+        \item Designed and implemented software solutions enhancing operational performance through Python automation and data analysis.
+        \item Streamlined data analysis workflows, significantly reducing processing time and improving efficiency.
+        \item Built and deployed data visualization program critical for chip accreditation at GlobalFoundries.
+        \item Collaborated with cross-functional teams to improve system reliability and product quality.
+        \item Conducted comprehensive testing and debugging ensuring optimal system performance.
+    \end{bulletlist}
+}
+
+\entry{Software Tester}{Joynext}{Aug 2019 -- Jan 2021}{Dresden}{
+    \begin{bulletlist}
+        \item Validated software functionality across diverse testing methodologies, ensuring high-quality deliverables and rapid bug resolution.
+        \item Executed comprehensive test cases, identifying and resolving critical software issues.
+        \item Improved testing strategies, increasing product quality and reducing time to market.
+        \item Partnered with developers to refine applications and provide actionable feedback.
+        \item Documented test results and produced stakeholder reports.
+    \end{bulletlist}
+}
+
+% --- INTERNSHIPS ---
+\section*{Internships}
+
+\entry{Software Tester Automation}{Joynext}{Sep 2020 -- Feb 2021}{Dresden}{
+    \begin{bulletlist}
+        \item Implemented automated testing for predictive street data in navigation units using Robot Framework.
+        \item Streamlined error detection through automation in GitLab CI/CD processes.
+        \item Improved reliability of testing frameworks.
+    \end{bulletlist}
+}
+
+% --- EDUCATION ---
+\newpage
+\section*{Education}
+
+\edu{Geomatics}{Hochschule für Technik und Wirtschaft Dresden}{2017 -- Aug 2022}
+{Student organizations: StuRa (Elected faculty representative), FSR, faranto. Skills: Databases, Python, Computer Vision, Git, Linux, GIS}
+
+\edu{College of Engineering \& Built Environment}{Technological University Dublin}{Sep 2019 -- Feb 2020}
+{Focused on Python programming, cross-cultural teamwork, and problem-solving. Skills: Python, Visual Studio Code, Git}
+
+\edu{Applied Informatics and Mathematics}{Hochschule für Technik und Wirtschaft Dresden}{2015 -- 2016}
+{Developed time management and teamwork skills as student assistant. Skills: GitHub, Problem Solving, Programming, C}
+
+\edu{Applied Mathematics and Informatics}{Saint Petersburg State University}{2007 -- 2011}
+{Skills: Troubleshooting, Problem Solving}
+
+% --- PROJECTS ---
+\section*{Projects}
+
+\entry{\href{https://github.com/vertok/prismalog}{prismalog}}{High-performance logging library for psy-supabase}{Mar 2025 -- Apr 2025}{Open Source}{
+    \small Enabling fast logging in multiprocessing/multithreading environments.
+}
+
+\entry{\href{https://psy-supabase.com/}{psy-supabase}}{Psychological AI backend}{Jan 2025 -- May 2025}{Personal Project}{
+    \small Leveraging Supabase, recognizing themes and psychological distress in therapeutic conversations. \\
+    \small \href{https://github.com/alexey-obukhov/psy-supabase}{GitHub} $\cdot$ \href{https://psy-supabase.com/}{Website}
+}
+
+% --- CERTIFICATIONS ---
+\section*{Certifications}
+
+\entry{\href{https://www.coursera.org/account/accomplishments/specialization/certificate/JP1BPAWJ4AYH}{IBM Machine Learning}}{Authenticity Verified}{Mar 2025 -- May 2025}{Coursera}{
+    \small Exploratory Data Analysis $\cdot$ Machine Learning $\cdot$ Deep Learning $\cdot$ Reinforcement Learning
+}
+
+% --- SKILLS ---
+\section*{Skills}
+\noindent
+\begin{tabularx}{\linewidth}{@{} p{3cm} X @{}}
+    \textbf{Technical Stack:} & Python (Programming Language) $\cdot$ PyTorch $\cdot$ SQL $\cdot$ Supabase \\
+    \textbf{Data \& Tools:} & Data Visualization $\cdot$ Git $\cdot$ Docker $\cdot$ CI/CD \\
+    \textbf{Areas \& Practices:} & RAG $\cdot$ Augmented Reality $\cdot$ Test Automation $\cdot$ AI/ML Architecture \\
+    \textbf{Soft Skills:} & Empathy \\
+    \textbf{Languages:} & English (Fluent) $\cdot$ German (Native) $\cdot$ Russian (Native) $\cdot$ Mandarin (Beginner)
+\end{tabularx}
+
+\end{document}
