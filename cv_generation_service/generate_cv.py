@@ -113,6 +113,12 @@ def prepare_tex_content(template_path, title, style, company):
         company_pattern = r'(\\newcommand\{\\company\}\{)[^}]*(\})'
         company_replacement = r'\g<1>' + company + r'\g<2>'
         content = re.sub(company_pattern, company_replacement, content)
+
+        # Flip company visibility flag
+        if company:
+            content = re.sub(r'\\showcompanyfalse', r'\\showcompanytrue', content)
+        else:
+            content = re.sub(r'\\showcompanytrue', r'\\showcompanyfalse', content)
         
         return content
     except Exception as e:
@@ -299,7 +305,9 @@ Examples:
     )
 
     parser.add_argument(
+        '--target',
         '--company',
+        dest='company',
         help='Target company label (optional)'
     )
     

@@ -44,6 +44,8 @@
 % The generator replaces this value to switch themes (modern | elegant | bold)
 \newcommand{\cvstyle}{modern}
 % The generator may inject a target company (optional)
+\newif\ifshowcompany
+\showcompanyfalse
 \newcommand{\company}{}
 
 \newcommand{\sectionrulecmd}{\titlerule}
@@ -119,6 +121,9 @@
     \setlength{\parskip}{0pt}
 }
 
+% Small chip for highlights
+\newcommand{\chip}[1]{\colorbox{accent!15}{\strut\footnotesize\textcolor{text}{#1}}}
+
 % Apply initial style
 \applycvstyle
 
@@ -131,16 +136,23 @@
         \includegraphics[width=\linewidth,height=3cm,keepaspectratio]{profile_pic.jpg}
     \end{minipage}%
     \hfill
-    \begin{minipage}[c]{0.80\textwidth}
+    \begin{minipage}[c]{0.68\textwidth}
         \raggedleft
         {\fontsize{24}{28}\selectfont\bfseries\color{primary} Alexey Balz} \\[4pt]
         {\Large\color{text} Python Developer} \\[6pt]
-        \ifstrempty{\company}{}{\textcolor{accent}{\small Target: \company}\\[4pt]}
         {\small\color{text}
          Dresden, Germany $\;\cdot\;$ +49 176 41032303 \\
          \href{https://alexey-balz.github.io}{alexey-balz.github.io} $\;\cdot\;$
          \href{mailto:alexey.balz@gmail.com}{alexey.balz@gmail.com}
         }
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[c]{0.12\textwidth}
+        \raggedleft
+        \IfFileExists{qr_profile.png}{%
+            \includegraphics[width=\linewidth]{qr_profile.png}\\
+            {\scriptsize\color{accent}Portfolio}\vspace{2pt}
+        }{}
     \end{minipage}
     \vspace{6pt}
 }
@@ -198,6 +210,9 @@
 \small
 \noindent
 % This is now STANDARD text. It shares the exact same margins as the Job Titles below.
+\ifshowcompany
+    {\textcolor{accent}{\small Target: \company}\\[4pt]}
+\fi
 Accomplished IT Engineer with over 4 years of experience in Software Testing, Data Analysis, and Python Development. Proven Expertise in Automation Solutions, Data Visualization, and Operational Workflows. Strong Commitment to Quality Assurance and Cross-Functional Collaboration. Focused on Data Analysis/ML/NLP Roles. Demonstrated high Empathy through building a Psychological AI Assistant that supports users with care and sensitivity.
 \vspace{10pt} % Manual spacing to match \entry spacing
 
