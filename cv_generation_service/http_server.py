@@ -5,8 +5,8 @@ Lightweight alternative to Docker/Flask that runs CV generation per request.
 Uses built-in HTTP server - no external dependencies except Flask-CORS for CORS support.
 
 Usage:
-    python3 http_server.py --port 5000
-    # Then POST to http://localhost:5000/generate-cv with JSON body:
+    python3 http_server.py --port 5001
+    # Then POST to http://localhost:5001/generate-cv with JSON body:
     # {"title": "Senior Developer", "template": "resume_balz"}
 """
 
@@ -182,8 +182,8 @@ def main():
     parser.add_argument(
         '--port',
         type=int,
-        default=5000,
-        help='Port to bind to (default: 5000)'
+        default=5001,
+        help='Port to bind to (default: 5001)'
     )
     
     args = parser.parse_args()

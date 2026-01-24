@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 TEMPLATES_DIR = os.getenv('TEMPLATES_DIR', '/app/templates')
 OUTPUT_DIR = os.getenv('OUTPUT_DIR', '/tmp/cv_output')
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB limit
+ALLOWED_STYLES = {"modern", "elegant", "bold", "luxe", "slate"}
 
 # Ensure output directory exists
 Path(OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
@@ -52,24 +53,62 @@ def validate_title(title):
     return title.strip()
 
 
-def prepare_tex_content(template_path, title):
+def validate_style(style):
+    """Validate the style/theme selection."""
+    if not style:
+        return "modern"
+
+    style = style.strip().lower()
+    if style not in ALLOWED_STYLES:
+        raise CVGenerationError(f"Style must be one of: {', '.join(sorted(ALLOWED_STYLES))}")
+
+    return style
+
+
+def validate_company(company):
+    """Validate optional target company label."""
+    if company is None:
+        return ""
+
+    company = company.strip()
+    if not company:
+        return ""
+
+    allowed_chars = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -_.,&()'/")
+    if not all(c in allowed_chars for c in company):
+        raise CVGenerationError("Company contains invalid characters")
+
+    if len(company) > 120:
+        raise CVGenerationError("Company is too long (max 120 characters)")
+
+    return company
+
+
+def prepare_tex_content(template_path, title, style, company):
     r"""
-    Read the LaTeX template and replace the \CVTitle definition with the provided title.
+    Read the LaTeX template and replace the visible header title and style marker.
     """
     try:
         with open(template_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
-        # Replace the \newcommand{\CVTitle}{...} with the new title
-        pattern = r'\\newcommand\{\\CVTitle\}\{[^}]*\}'
-        replacement = r'\\newcommand{\\CVTitle}{' + title + r'}'
+
+        # Match header like: {\Large\color{text} Python Developer}
+        pattern = r'(\{\\Large\\color\{text\}\s+)[^}]+(\})'
+        replacement = r'\g<1>' + title + r'\g<2>'
         content = re.sub(pattern, replacement, content)
-        
+
+        style_pattern = r'(\\newcommand\{\\cvstyle\}\{)[^}]+(\})'
+        style_replacement = r'\g<1>' + style + r'\g<2>'
+        content = re.sub(style_pattern, style_replacement, content)
+
+        company_pattern = r'(\\newcommand\{\\company\}\{)[^}]*(\})'
+        company_replacement = r'\g<1>' + company + r'\g<2>'
+        content = re.sub(company_pattern, company_replacement, content)
+
         return content
     except Exception as e:
         raise CVGenerationError(f"Failed to read template: {str(e)}")
 
-# P5rLAF6Gr6wjRn3EuS5c
 def generate_pdf(template_path, output_filename, working_dir):
     """
     Compile LaTeX template to PDF using pdflatex.
@@ -125,7 +164,9 @@ def generate_cv():
     Expected JSON payload:
     {
         "title": "Senior Python Developer",  # Optional - for future use
-        "template": "resume_balz"             # Template name (without .tex)
+        "template": "resume_balz",            # Template name (without .tex)
+        "style": "modern",                  # Style key (modern, elegant, bold)
+        "company": "ACME"                  # Target company (optional)
     }
     
     Returns: PDF file as binary data
@@ -141,9 +182,13 @@ def generate_cv():
         
         title = data.get('title', 'CV')
         template_name = data.get('template', 'resume_balz')
+        style = data.get('style', 'modern')
+        company = data.get('company', '')
         
         # Validate inputs
         title = validate_title(title)
+        style = validate_style(style)
+        company = validate_company(company)
         
         # Sanitize template name
         if not all(c.isalnum() or c in '-_' for c in template_name):
@@ -158,7 +203,7 @@ def generate_cv():
         temp_dir = tempfile.mkdtemp(prefix='cv_gen_')
         
         # Prepare LaTeX content with custom title
-        tex_content = prepare_tex_content(template_path, title)
+        tex_content = prepare_tex_content(template_path, title, style, company)
         
         # Write prepared template to temp directory
         temp_template = os.path.join(temp_dir, f'{template_name}.tex')
@@ -260,6 +305,6 @@ if __name__ == '__main__':
     # For development only - use gunicorn in production
     app.run(
         host='0.0.0.0',
-        port=int(os.getenv('PORT', 5000)),
+        port=int(os.getenv('PORT', 5001)),
         debug=os.getenv('FLASK_ENV') == 'development'
     )

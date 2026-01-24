@@ -11,11 +11,11 @@
             padding: 40px;
         }
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            border: 4px solid #e8edf2;
+            border-top: 4px solid #0f766e;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             animation: spin 1s linear infinite;
             margin: 20px auto;
         }
@@ -23,108 +23,163 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .hidden {
-            display: none;
-        }
+        .hidden { display: none; }
+
         .btn {
-            padding: 10px 20px;
-            margin: 10px 5px;
+            padding: 12px 18px;
+            margin: 8px 6px 0 0;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
         }
         .btn-primary {
-            background-color: #3498db;
-            color: white;
+            background: linear-gradient(120deg, #0ea5e9, #0f766e);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.18);
         }
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 14px 32px rgba(14, 165, 233, 0.2); }
         .btn-secondary {
-            background-color: #95a5a6;
-            color: white;
+            background: #0b172a;
+            color: #e9edf5;
+            border: 1px solid rgba(255,255,255,0.08);
         }
-        .btn-secondary:hover {
-            background-color: #7f8c8d;
-        }
-        #title-selector {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 4px;
-            margin: 20px 0;
-            border: 1px solid #dee2e6;
-        }
-        #title-selector h3 {
-            margin-top: 0;
-            color: #333;
-        }
+        .btn-secondary:hover { transform: translateY(-1px); }
+
+        #title-selector { margin: 20px 0; }
+        #title-selector h3 { margin: 0; }
+
         .title-input-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
-            align-items: flex-end;
+            margin: 12px 0 18px;
+            align-items: center;
         }
         #titleInput {
             flex: 1;
-            min-width: 200px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            min-width: 260px;
+            padding: 12px 14px;
+            border: 1px solid #d6dbe3;
+            border-radius: 12px;
             font-size: 16px;
+            background: #f9fbfd;
+            transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
         #titleInput:focus {
             outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            border-color: #0ea5e9;
+            box-shadow: 0 8px 22px rgba(14, 165, 233, 0.18);
+            background: #fff;
         }
         .title-presets {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
+            margin-bottom: 6px;
+            align-items: center;
+        }
+        .preset-label {
+            font-size: 13px;
+            color: #5b6677;
+            font-weight: 600;
         }
         .title-preset {
-            padding: 8px 16px;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 8px 14px;
+            background-color: #fff;
+            border: 1px solid #d6dbe3;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.2s;
+            color: #1f2937;
         }
-        .title-preset:hover {
-            background-color: #e8f4f8;
-            border-color: #3498db;
+        .title-preset:hover { border-color: #0ea5e9; background-color: #f0f9ff; }
+        .title-preset.active { background: #0ea5e9; color: white; border-color: #0ea5e9; }
+
+        .section-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
         }
-        .title-preset.active {
-            background-color: #3498db;
-            color: white;
-            border-color: #3498db;
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 12px;
+            color: #5b6677;
+            margin: 0 0 6px;
+            font-weight: 700;
         }
-        #actions {
-            text-align: center;
-            margin-top: 20px;
+        .lede { margin: 4px 0 0; color: #3a4757; }
+        .subtext { margin: 4px 0 0; color: #5b6677; font-size: 14px; }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #f0f4f8;
+            color: #0b172a;
+            font-weight: 700;
+            font-size: 13px;
         }
+
+        .style-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .style-option {
+            border: 1px solid #d6dbe3;
+            background: #fdfefe;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.2s ease;
+        }
+        .style-option:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08); }
+        .style-option.active { border-color: #0ea5e9; box-shadow: 0 12px 32px rgba(14, 165, 233, 0.15); }
+        .style-swatch { display: inline-flex; gap: 6px; }
+        .style-swatch span { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
+        .style-name { margin: 0; font-weight: 700; color: #0b172a; }
+        .style-caption { margin: 2px 0 0; font-size: 13px; color: #5b6677; }
+
+        #actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .action-buttons { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
         .error {
-            background-color: #f8d7da;
-            color: #721c24;
+            background-color: #fef2f2;
+            color: #b91c1c;
             padding: 15px;
-            border-radius: 4px;
+            border-radius: 10px;
             margin: 20px 0;
-            border: 1px solid #f5c6cb;
+            border: 1px solid #fecdd3;
         }
         .status {
             font-size: 14px;
-            color: #555;
+            color: #0f172a;
             margin-top: 10px;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>View CV - Alexey Balz</h1>
+    <div class="page-shell">
+    <header class="card header-card">
+        <div>
+            <p class="eyebrow">Career-ready CVs</p>
+            <h1>View CV - Alexey Balz</h1>
+            <p class="lede">Switch job titles and visual styles instantly, then export a polished PDF.</p>
+        </div>
     </header>
     <main>
         <div id="loading" class="hidden">
@@ -133,9 +188,16 @@
         </div>
         
         <div id="content">
-            <!-- Title Selector Section -->
-            <div id="title-selector">
-                <h3>Customize Your CV Title</h3>
+            <!-- Title & Style Selector Section -->
+            <div id="title-selector" class="card">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">Content</p>
+                        <h3>Customize your CV title</h3>
+                        <p class="subtext">Choose a target role and we will stamp it in the PDF header.</p>
+                    </div>
+                    <span class="chip" id="activeTitleChip">Python Developer</span>
+                </div>
                 <div class="title-input-group">
                     <input 
                         type="text" 
@@ -144,10 +206,16 @@
                         value="Python Developer"
                         maxlength="200"
                     >
+                    <input
+                        type="text"
+                        id="companyInput"
+                        placeholder="Optional: Target company (e.g., ACME Corp)"
+                        maxlength="120"
+                    >
                     <button id="generateButton" class="btn btn-primary">Generate CV</button>
                 </div>
                 <div class="title-presets">
-                    <span style="font-size: 14px; color: #666; align-self: center; margin-right: 8px;">Quick presets:</span>
+                    <span class="preset-label">Quick presets:</span>
                     <button class="title-preset" data-title="Python Developer">Python Developer</button>
                     <button class="title-preset" data-title="Senior ML Engineer">Senior ML Engineer</button>
                     <button class="title-preset" data-title="Data Scientist">Data Scientist</button>
@@ -155,17 +223,91 @@
                     <button class="title-preset" data-title="Software Engineer">Software Engineer</button>
                     <button class="title-preset" data-title="DevOps Engineer">DevOps Engineer</button>
                 </div>
+
+                <div id="style-selector">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">Visual theme</p>
+                            <h3>Pick a style</h3>
+                            <p class="subtext">Swap color palette and typography to match the role.</p>
+                        </div>
+                        <span class="chip" id="activeStyleChip">Modern</span>
+                    </div>
+                    <div class="style-options">
+                        <button class="style-option active" data-style="modern">
+                            <div class="style-swatch">
+                                <span style="background:#124074"></span>
+                                <span style="background:#576C7A"></span>
+                                <span style="background:#191C22"></span>
+                            </div>
+                            <div>
+                                <p class="style-name">Modern</p>
+                                <p class="style-caption">Sans-serif, crisp dividers</p>
+                            </div>
+                        </button>
+                        <button class="style-option" data-style="elegant">
+                            <div class="style-swatch">
+                                <span style="background:#262626"></span>
+                                <span style="background:#706352"></span>
+                                <span style="background:#222222"></span>
+                            </div>
+                            <div>
+                                <p class="style-name">Elegant</p>
+                                <p class="style-caption">Serif headings, warm accent</p>
+                            </div>
+                        </button>
+                        <button class="style-option" data-style="bold">
+                            <div class="style-swatch">
+                                <span style="background:#0A5E5E"></span>
+                                <span style="background:#333333"></span>
+                                <span style="background:#161616"></span>
+                            </div>
+                            <div>
+                                <p class="style-name">Bold</p>
+                                <p class="style-caption">High-contrast, compact spacing</p>
+                            </div>
+                        </button>
+                        <button class="style-option" data-style="luxe">
+                            <div class="style-swatch">
+                                <span style="background:#A87D3A"></span>
+                                <span style="background:#5A6373"></span>
+                                <span style="background:#1A1A1A"></span>
+                            </div>
+                            <div>
+                                <p class="style-name">Minimal Luxe</p>
+                                <p class="style-caption">Warm gold accent, serif headings</p>
+                            </div>
+                        </button>
+                        <button class="style-option" data-style="slate">
+                            <div class="style-swatch">
+                                <span style="background:#1C2D44"></span>
+                                <span style="background:#60748A"></span>
+                                <span style="background:#161A21"></span>
+                            </div>
+                            <div>
+                                <p class="style-name">Midnight Slate</p>
+                                <p class="style-caption">Cool blue-gray, crisp sans</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- PDF Preview -->
-            <div id="pdf-preview">
+            <div id="pdf-preview" class="card">
                 <p>Loading preview...</p>
             </div>
             
             <!-- Action Buttons -->
-            <div id="actions">
-                <button id="downloadButton" class="btn btn-primary">Download CV</button>
-                <button id="refreshButton" class="btn btn-secondary">Refresh PDF</button>
+            <div id="actions" class="card actions-card">
+                <div>
+                    <h3>Export</h3>
+                    <p class="subtext">Download or refresh the PDF after tweaking title or style.</p>
+                </div>
+                <div class="action-buttons">
+                    <button id="downloadButton" class="btn btn-primary">Download CV</button>
+                    <button id="refreshButton" class="btn btn-secondary">Refresh PDF</button>
+                </div>
                 <p id="status" class="status hidden"></p>
             </div>
         </div>
@@ -175,8 +317,9 @@
             <button id="retryButton" class="btn btn-primary">Retry</button>
         </div>
     </main>
-    <div id="footer">
+    <div id="footer" class="card footer-card">
         <p>&copy; <span id="currentYear"></span> Alexey Balz</p>
+    </div>
     </div>
 
     <script>
@@ -192,6 +335,10 @@
         // State
         let currentPdfUrl = null;
         let currentTitle = 'Python Developer';
+        let currentStyle = 'modern';
+        let currentCompany = '';
+
+        const toTitleCase = (value) => value.charAt(0).toUpperCase() + value.slice(1);
 
         /**
          * Show loading state
@@ -217,6 +364,7 @@
          */
         function updateTitleDisplay(title) {
             document.getElementById('titleInput').value = title;
+            document.getElementById('activeTitleChip').textContent = title;
             // Update active preset button
             document.querySelectorAll('.title-preset').forEach(btn => {
                 btn.classList.toggle('active', btn.getAttribute('data-title') === title);
@@ -224,10 +372,31 @@
         }
 
         /**
+         * Update UI company display
+         */
+        function updateCompanyDisplay(company) {
+            currentCompany = company;
+            document.getElementById('companyInput').value = company;
+        }
+
+        /**
+         * Update UI style display
+         */
+        function updateStyleDisplay(style) {
+            currentStyle = style;
+            document.getElementById('activeStyleChip').textContent = toTitleCase(style);
+            document.querySelectorAll('.style-option').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-style') === style);
+            });
+        }
+
+        /**
          * Generate CV from API with custom title
          */
-        async function generateCV(title = null) {
+        async function generateCV(title = null, style = null, company = null) {
             const titleToUse = title || document.getElementById('titleInput').value.trim();
+            const styleToUse = style || currentStyle;
+            const companyToUse = company !== null ? company : document.getElementById('companyInput').value.trim();
             
             if (!titleToUse) {
                 showError('Please enter a job title');
@@ -236,6 +405,8 @@
 
             currentTitle = titleToUse;
             updateTitleDisplay(titleToUse);
+            updateStyleDisplay(styleToUse);
+            updateCompanyDisplay(companyToUse);
             showLoading(true);
 
             try {
@@ -246,7 +417,9 @@
                     },
                     body: JSON.stringify({
                         title: titleToUse,
-                        template: 'resume_balz'
+                        template: 'resume_balz',
+                        style: styleToUse,
+                        company: companyToUse
                     })
                 });
 
@@ -268,23 +441,28 @@
                 // Convert response to blob for preview
                 const pdfBlob = await response.blob();
                 const url = window.URL.createObjectURL(pdfBlob);
+                if (currentPdfUrl) {
+                    window.URL.revokeObjectURL(currentPdfUrl);
+                }
+                currentPdfUrl = url;
                 
                 // Display PDF preview
                 const preview = document.getElementById('pdf-preview');
-                preview.innerHTML = `<iframe src="${url}" style="width: 100%; height: 600px; border: none;"></iframe>`;
+                preview.innerHTML = `<iframe src="${url}" style="width: 100%; height: 640px; border: none;"></iframe>`;
                 
                 showLoading(false);
                 document.getElementById('status').classList.add('hidden');
                 
-                // Store title for download
+                // Store for download
                 currentTitle = titleToUse;
+                currentCompany = companyToUse;
 
             } catch (error) {
                 console.error('CV generation error:', error);
                 // Fallback to static PDF
                 console.log('Falling back to static PDF...');
                 const preview = document.getElementById('pdf-preview');
-                preview.innerHTML = `<iframe src="${FALLBACK_PDF}" style="width: 100%; height: 600px; border: none;"></iframe>`;
+                preview.innerHTML = `<iframe src="${FALLBACK_PDF}" style="width: 100%; height: 640px; border: none;"></iframe>`;
                 showLoading(false);
                 document.getElementById('status').textContent = 'Using cached CV (API unavailable)';
                 document.getElementById('status').classList.remove('hidden');
@@ -314,7 +492,9 @@
                 },
                 body: JSON.stringify({
                     title: currentTitle,
-                    template: 'resume_balz'
+                    template: 'resume_balz',
+                    style: currentStyle,
+                    company: currentCompany
                 })
             })
             .then(response => {
@@ -367,14 +547,23 @@
         });
         
         document.getElementById('downloadButton').addEventListener('click', downloadCV);
-        document.getElementById('refreshButton').addEventListener('click', () => generateCV(currentTitle));
+        document.getElementById('refreshButton').addEventListener('click', () => generateCV(currentTitle, currentStyle, currentCompany));
         document.getElementById('retryButton').addEventListener('click', () => generateCV());
 
         // Handle preset buttons
         document.querySelectorAll('.title-preset').forEach(btn => {
             btn.addEventListener('click', () => {
                 const title = btn.getAttribute('data-title');
-                generateCV(title);
+                generateCV(title, currentStyle, currentCompany);
+            });
+        });
+
+        // Handle style options
+        document.querySelectorAll('.style-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const style = btn.getAttribute('data-style');
+                updateStyleDisplay(style);
+                generateCV(currentTitle, style, currentCompany);
             });
         });
 

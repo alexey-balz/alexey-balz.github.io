@@ -22,21 +22,21 @@ RUN mkdir -p /app/templates /tmp/cv_output
 COPY app.py .
 
 # Copy templates and assets
-COPY resume_balz.tex /app/templates/
-COPY profile_pic.jpg /app/templates/
+COPY templates/resume_balz.tex /app/templates/
+COPY templates/assets/profile_pic.jpg /app/templates/
 
 # Expose port
-EXPOSE 5000
+EXPOSE 5001
 
 # Environment variables
 ENV FLASK_ENV=production
 ENV TEMPLATES_DIR=/app/templates
 ENV OUTPUT_DIR=/tmp/cv_output
-ENV PORT=5000
+ENV PORT=5001
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python3 -c "import requests; requests.get('http://localhost:5000/health')" || exit 1
+    CMD python3 -c "import requests; requests.get('http://localhost:5001/health')" || exit 1
 
 # Run with gunicorn for production
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "120", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--workers", "4", "--timeout", "120", "app:app"]

@@ -3,35 +3,124 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}
+\usepackage{etoolbox}
 
 % ============ COLORS ============
-\definecolor{primary}{RGB}{0, 51, 102}   % Navy Blue
-\definecolor{accent}{RGB}{80, 80, 80}    % Dark Gray
-\definecolor{text}{RGB}{30, 30, 30}      % Black/Dark Gray
+% Core palettes (do not edit; switch through \cvstyle)
+\definecolor{primary_modern}{RGB}{18, 64, 116}
+\definecolor{accent_modern}{RGB}{87, 108, 122}
+\definecolor{text_modern}{RGB}{25, 28, 34}
+
+\definecolor{primary_elegant}{RGB}{38, 38, 38}
+\definecolor{accent_elegant}{RGB}{112, 99, 82}
+\definecolor{text_elegant}{RGB}{34, 34, 34}
+
+\definecolor{primary_bold}{RGB}{10, 94, 94}
+\definecolor{accent_bold}{RGB}{51, 51, 51}
+\definecolor{text_bold}{RGB}{22, 22, 22}
+
+\definecolor{primary_luxe}{RGB}{168, 125, 58}
+\definecolor{accent_luxe}{RGB}{90, 99, 115}
+\definecolor{text_luxe}{RGB}{26, 26, 26}
+
+\definecolor{primary_slate}{RGB}{28, 45, 68}
+\definecolor{accent_slate}{RGB}{96, 116, 138}
+\definecolor{text_slate}{RGB}{22, 26, 33}
+
+% Active palette (aliases reassigned by \applycvstyle)
+\colorlet{primary}{primary_modern}
+\colorlet{accent}{accent_modern}
+\colorlet{text}{text_modern}
 
 \usepackage{graphicx}
 \usepackage{tabularx}
 \usepackage{titlesec}
 \usepackage{helvet}
+\usepackage{lmodern}
 \usepackage{amssymb}
 \usepackage[colorlinks=true,urlcolor=primary,linkcolor=primary]{hyperref}
 
-% ============ TYPOGRAPHY ============
-\renewcommand{\familydefault}{\sfdefault} % Helvetica (Arial-like)
-\raggedright                            % LEFT ALIGN TEXT (Prevents weird word stretching)
-\linespread{1.1}                        % Improved line spacing
-\setlength{\parindent}{0pt}             % No indentation for paragraphs
-\setlength{\parskip}{0pt}               % No automatic spacing between paragraphs
+% ============ STYLES ============
+% The generator replaces this value to switch themes (modern | elegant | bold)
+\newcommand{\cvstyle}{modern}
+% The generator may inject a target company (optional)
+\newcommand{\company}{}
 
-% ============ SECTION HEADERS ============
-\titleformat{\section}
-  {\Large\bfseries\color{primary}\uppercase} % Format
-  {}{0em}                                    % Label
-  {}                                         % Before
-  [\titlerule]                               % After (Line)
+\newcommand{\sectionrulecmd}{\titlerule}
+\newcommand{\sectionformat}{\Large\bfseries\color{primary}\uppercase}
+\newcommand{\sectionbeforeskip}{14pt}
+\newcommand{\sectionafterskip}{8pt}
+\newcommand{\setsectionstyle}{%
+    \titleformat{\section}{\sectionformat}{}{0em}{}[\sectionrulecmd]%
+    \titlespacing*{\section}{0pt}{\sectionbeforeskip}{\sectionafterskip}%
+}
 
-% Spacing: 14pt before section, 8pt after section line
-\titlespacing*{\section}{0pt}{14pt}{8pt}
+\newcommand{\applycvstyle}{%
+    % Modern: crisp sans, navy accents
+    \ifdefstring{\cvstyle}{modern}{%
+        \colorlet{primary}{primary_modern}%
+        \colorlet{accent}{accent_modern}%
+        \colorlet{text}{text_modern}%
+        \renewcommand{\familydefault}{\sfdefault}%
+        \renewcommand{\sectionformat}{\Large\bfseries\color{primary}\uppercase}%
+        \renewcommand{\sectionrulecmd}{\titlerule}%
+        \renewcommand{\sectionbeforeskip}{14pt}%
+        \renewcommand{\sectionafterskip}{8pt}%
+    }{}
+    % Elegant: serif headings with bronze accent
+    \ifdefstring{\cvstyle}{elegant}{%
+        \colorlet{primary}{primary_elegant}%
+        \colorlet{accent}{accent_elegant}%
+        \colorlet{text}{text_elegant}%
+        \renewcommand{\familydefault}{\rmdefault}%
+        \renewcommand{\sectionformat}{\Large\bfseries\color{primary}}%
+        \renewcommand{\sectionrulecmd}{\titlerule}%
+        \renewcommand{\sectionbeforeskip}{16pt}%
+        \renewcommand{\sectionafterskip}{10pt}%
+    }{}
+    % Bold: teal primary with compact rules
+    \ifdefstring{\cvstyle}{bold}{%
+        \colorlet{primary}{primary_bold}%
+        \colorlet{accent}{accent_bold}%
+        \colorlet{text}{text_bold}%
+        \renewcommand{\familydefault}{\sfdefault}%
+        \renewcommand{\sectionformat}{\Large\bfseries\color{primary}}%
+        \renewcommand{\sectionrulecmd}{\titlerule}%
+        \renewcommand{\sectionbeforeskip}{12pt}%
+        \renewcommand{\sectionafterskip}{6pt}%
+    }{}
+    % Luxe: warm gold accent, refined spacing
+    \ifdefstring{\cvstyle}{luxe}{%
+        \colorlet{primary}{primary_luxe}%
+        \colorlet{accent}{accent_luxe}%
+        \colorlet{text}{text_luxe}%
+        \renewcommand{\familydefault}{\rmdefault}%
+        \renewcommand{\sectionformat}{\Large\bfseries\color{primary}}%
+        \renewcommand{\sectionrulecmd}{\titlerule}%
+        \renewcommand{\sectionbeforeskip}{15pt}%
+        \renewcommand{\sectionafterskip}{9pt}%
+    }{}
+    % Slate: cool deep blue-gray, crisp sans
+    \ifdefstring{\cvstyle}{slate}{%
+        \colorlet{primary}{primary_slate}%
+        \colorlet{accent}{accent_slate}%
+        \colorlet{text}{text_slate}%
+        \renewcommand{\familydefault}{\sfdefault}%
+        \renewcommand{\sectionformat}{\Large\bfseries\color{primary}\uppercase}%
+        \renewcommand{\sectionrulecmd}{\titlerule}%
+        \renewcommand{\sectionbeforeskip}{14pt}%
+        \renewcommand{\sectionafterskip}{8pt}%
+    }{}
+
+    \setsectionstyle
+    \raggedright
+    \linespread{1.1}
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{0pt}
+}
+
+% Apply initial style
+\applycvstyle
 
 % ============ CUSTOM MACROS ============
 
@@ -46,6 +135,7 @@
         \raggedleft
         {\fontsize{24}{28}\selectfont\bfseries\color{primary} Alexey Balz} \\[4pt]
         {\Large\color{text} Python Developer} \\[6pt]
+        \ifstrempty{\company}{}{\textcolor{accent}{\small Target: \company}\\[4pt]}
         {\small\color{text}
          Dresden, Germany $\;\cdot\;$ +49 176 41032303 \\
          \href{https://alexey-balz.github.io}{alexey-balz.github.io} $\;\cdot\;$

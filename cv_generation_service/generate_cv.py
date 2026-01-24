@@ -33,6 +33,9 @@ class CVGenerationError(Exception):
     pass
 
 
+ALLOWED_STYLES = {"modern", "elegant", "bold", "luxe", "slate"}
+
+
 def get_base_dir():
     """Get the base directory of the service."""
     return Path(__file__).parent.resolve()
@@ -54,10 +57,42 @@ def validate_title(title):
     return title.strip()
 
 
-def prepare_tex_content(template_path, title):
+def validate_style(style):
+    """Validate the LaTeX style theme."""
+    if not style:
+        return "modern"
+
+    style = style.strip().lower()
+    if style not in ALLOWED_STYLES:
+        raise CVGenerationError(f"Style must be one of: {', '.join(sorted(ALLOWED_STYLES))}")
+
+    return style
+
+
+def validate_company(company):
+    """Validate optional target company label."""
+    if company is None:
+        return ""
+
+    company = company.strip()
+    if not company:
+        return ""
+
+    allowed_chars = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -_.,&()'/")
+    if not all(c in allowed_chars for c in company):
+        raise CVGenerationError("Company contains invalid characters")
+
+    if len(company) > 120:
+        raise CVGenerationError("Company is too long (max 120 characters)")
+
+    return company
+
+
+def prepare_tex_content(template_path, title, style, company):
     r"""
-    Read the LaTeX template and replace the title in the CV header.
-    Looks for: {\Large\color{text} Python Developer} or similar pattern
+    Read the LaTeX template and replace the title and style in the CV header.
+    Looks for title: {\Large\color{text} ...}
+    Looks for style: \newcommand{\cvstyle}{modern}
     """
     try:
         with open(template_path, 'r', encoding='utf-8') as f:
@@ -68,6 +103,16 @@ def prepare_tex_content(template_path, title):
         pattern = r'(\{\\Large\\color\{text\}\s+)[^}]+(\})'
         replacement = r'\g<1>' + title + r'\g<2>'
         content = re.sub(pattern, replacement, content)
+
+        # Replace style marker
+        style_pattern = r'(\\newcommand\{\\cvstyle\}\{)[^}]+(\})'
+        style_replacement = r'\g<1>' + style + r'\g<2>'
+        content = re.sub(style_pattern, style_replacement, content)
+
+        # Replace company marker
+        company_pattern = r'(\\newcommand\{\\company\}\{)[^}]*(\})'
+        company_replacement = r'\g<1>' + company + r'\g<2>'
+        content = re.sub(company_pattern, company_replacement, content)
         
         return content
     except Exception as e:
@@ -111,13 +156,14 @@ def generate_pdf(template_path, output_filename, working_dir):
         raise CVGenerationError(f"PDF generation failed: {str(e)}")
 
 
-def generate_cv(template_name='resume_balz', title='CV', output_dir=None):
+def generate_cv(template_name='resume_balz', title='CV', style='modern', company='', output_dir=None):
     """
     Generate a PDF CV from LaTeX template.
     
     Args:
         template_name: Name of the template (without .tex extension)
         title: Title for the CV document
+        style: Visual style to apply (modern, elegant, bold)
         output_dir: Directory to save the PDF (defaults to ./cv_output/)
     
     Returns:
@@ -139,6 +185,8 @@ def generate_cv(template_name='resume_balz', title='CV', output_dir=None):
     try:
         # Validate inputs
         title = validate_title(title)
+        style = validate_style(style)
+        company = validate_company(company)
         
         # Sanitize template name
         if not all(c.isalnum() or c in '-_' for c in template_name):
@@ -154,7 +202,7 @@ def generate_cv(template_name='resume_balz', title='CV', output_dir=None):
         logger.info(f"Using temporary directory: {temp_dir}")
         
         # Prepare LaTeX content with custom title
-        tex_content = prepare_tex_content(str(template_path), title)
+        tex_content = prepare_tex_content(str(template_path), title, style, company)
         
         # Write prepared template to temp directory
         temp_template = Path(temp_dir) / f'{template_name}.tex'
@@ -243,6 +291,17 @@ Examples:
         default='CV',
         help='CV title/subtitle (default: CV)'
     )
+
+    parser.add_argument(
+        '--style',
+        default='modern',
+        help='CV style (modern, elegant, bold)'
+    )
+
+    parser.add_argument(
+        '--company',
+        help='Target company label (optional)'
+    )
     
     parser.add_argument(
         '--output',
@@ -255,6 +314,8 @@ Examples:
         pdf_path = generate_cv(
             template_name=args.template,
             title=args.title,
+            style=args.style,
+            company=args.company,
             output_dir=args.output
         )
         print(f"\n✓ PDF generated successfully: {pdf_path}")
