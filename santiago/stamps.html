@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 Epic Camino Stamps | Sarria to Santiago</title>
+    <style>
+        :root {
+            --primary-color: #2c5e3b; /* Forest Green */
+            --secondary-color: #e8dbce; /* Warm Beige */
+            --text-main: #333333;
+            --text-muted: #666666;
+            --bg-main: #f9f7f3;
+            --card-bg: #ffffff;
+            --accent: #d97736; /* Terracotta */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--card-bg);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Header / Hero Section */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0 0 1rem 0;
+        }
+        header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Main Content Container */
+        main {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* Grid Layout */
+        .stamps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Card Styling */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-img-container {
+            height: 200px;
+            background-color: var(--secondary-color);
+            position: relative;
+        }
+        .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Placeholder styling if image fails to load */
+            font-style: italic;
+            color: transparent; 
+        }
+        .step-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent);
+            color: white;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+        .coords {
+            font-family: monospace;
+            background: var(--bg-main);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        .card p {
+            margin: 0 0 1.5rem 0;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+        .stamp-type {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent);
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-main);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+        footer a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .stamps-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body id="top">
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="hike.html">Hike</a></li>
+            <li><a href="accommodation.html">Accommodation</a></li>
+            <li><a href="meals.html">Meals</a></li>
+            <li><a href="#stamps">Unique Stamps</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>🥾 Epic Stamps of the Camino</h1>
+        <p>The 10 most unique and memorable passport stamps from Sarria to Santiago de Compostela.</p>
+    </header>
+
+    <main id="stamps">
+        <p class="intro">Skip the generic rubber stamps. These stops offer handcrafted art, historical seals, and unique markers representing the true spirit of the final 100km.</p>
+
+        <div class="stamps-grid">
+            
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">1</span>
+                    <img src="https://images.unsplash.com/photo-1541364532688-69324d271618?auto=format&fit=crop&w=600&q=80" alt="Trailside paths of the Camino">
+                </div>
+                <div class="card-content">
+                    <h3>Trailside Artists</h3>
+                    <span class="coords">📍 42.77° N, -7.41° W (Variable)</span>
+                    <p>Independent local artists and musicians often set up small tables along the rural paths before Portomarín. They offer custom, hand-crafted stamps—and sometimes actual hot wax seals (sellos de lacre)—in exchange for a small donation.</p>
+                    <div class="stamp-type">Type: Wax Seal / Handcrafted Art</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">2</span>
+                    <img src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80" alt="Romanesque stone architecture">
+                </div>
+                <div class="card-content">
+                    <h3>Iglesia de Santiago de Barbadelo</h3>
+                    <span class="coords">📍 42.776° N, -7.452° W</span>
+                    <p>Located just a few kilometers outside of Sarria, this 12th-century Romanesque church offers an intricate stamp reflecting its historic architecture. Getting it requires timing your walk to pass by when the doors are open.</p>
+                    <div class="stamp-type">Type: Historical Ink Stamp</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">3</span>
+                    <img src="https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?auto=format&fit=crop&w=600&q=80" alt="Camino trail marker stone">
+                </div>
+                <div class="card-content">
+                    <h3>The 100km Milestone Cafés</h3>
+                    <span class="coords">📍 ~42.82° N, -7.63° W</span>
+                    <p>You cannot stamp your passport on the famous "100 km" stone marker itself, but the small cafés and vendors positioned immediately around this exact boundary in Ferreiros / Brea offer unique stamps specifically commemorating crossing this crucial threshold.</p>
+                    <div class="stamp-type">Type: Commemorative Threshold Stamp</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">4</span>
+                    <img src="https://images.unsplash.com/photo-1599813358055-6b45d04cc6e2?auto=format&fit=crop&w=600&q=80" alt="Spanish Post Office symbol concept">
+                </div>
+                <div class="card-content">
+                    <h3>Oficina Rural de Correos (Portomarín)</h3>
+                    <span class="coords">📍 42.807° N, -7.615° W</span>
+                    <p>Instead of a standard rubber stamp, the Spanish Post Office offers an official philatelic tourist postmark (matasellos). This legally dated ink cancellation features local monuments, resembling an official passport visa.</p>
+                    <div class="stamp-type">Type: Official Postmark (Matasellos)</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">5</span>
+                    <img src="https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?auto=format&fit=crop&w=600&q=80" alt="Ancient church interior frescoes">
+                </div>
+                <div class="card-content">
+                    <h3>Iglesia de San Salvador de Vilar de Donas</h3>
+                    <span class="coords">📍 42.890° N, -7.810° W</span>
+                    <p>Requires a 2-kilometer detour off the main path near Palas de Rei. It is a 12th-century national monument containing ancient frescoes and the tombs of the Knights of the Order of Santiago. The caretakers are deeply knowledgeable.</p>
+                    <div class="stamp-type">Type: Order of Santiago Stamp</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">6</span>
+                    <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80" alt="Galician Octopus Dish">
+                </div>
+                <div class="card-content">
+                    <h3>Octopus Ezequiel (Melide)</h3>
+                    <span class="coords">📍 42.910° N, -8.010° W</span>
+                    <p>Melide is famous for pulpo a la gallega. Getting your passport stamped at this massive, chaotic pulpería proves you took part in the Camino's most famous communal eating tradition.</p>
+                    <div class="stamp-type">Type: Culinary / Restaurant Stamp</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">7</span>
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="River and stone bridge">
+                </div>
+                <div class="card-content">
+                    <h3>Albergue de Ribadixo</h3>
+                    <span class="coords">📍 42.923° N, -8.132° W</span>
+                    <p>Located immediately after crossing a medieval bridge over the River Iso, this is a 15th-century pilgrim hospital that has continuously operated for centuries. It connects your credencial directly to medieval hospitality.</p>
+                    <div class="stamp-type">Type: Historical Hospital Stamp</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">8</span>
+                    <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80" alt="Eucalyptus forest path">
+                </div>
+                <div class="card-content">
+                    <h3>Ermita de Santa Irene</h3>
+                    <span class="coords">📍 42.909° N, -8.337° W</span>
+                    <p>Hidden in dense eucalyptus forests, this small chapel dedicated to a Portuguese martyr is easy to walk right past. Featuring a nearby "fountain of eternal youth," it offers a classic, hard-earned stamp in a tranquil setting.</p>
+                    <div class="stamp-type">Type: Secluded Chapel Stamp</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">9</span>
+                    <img src="https://images.unsplash.com/photo-1437482078695-73f5ca6c96e2?auto=format&fit=crop&w=600&q=80" alt="Flowing river water">
+                </div>
+                <div class="card-content">
+                    <h3>Lavacolla River Area</h3>
+                    <span class="coords">📍 42.895° N, -8.455° W</span>
+                    <p>Historically, this is where medieval pilgrims would strip down and wash themselves in the river to be clean before entering Santiago. Getting a stamp from a local parish or business here honors this ancient purification tradition.</p>
+                    <div class="stamp-type">Type: Historical Tradition Stamp</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container">
+                    <span class="step-number">10</span>
+                    <img src="https://images.unsplash.com/photo-1549468057-5b2fa71661cb?auto=format&fit=crop&w=600&q=80" alt="Cathedral of Santiago de Compostela">
+                </div>
+                <div class="card-content">
+                    <h3>The Sacristy of the Cathedral</h3>
+                    <span class="coords">📍 42.8806° N, -8.5443° W</span>
+                    <p>While the Pilgrim's Reception Office gives the final stamp for your Compostela, the ultimate secret stamp is found inside the Cathedral itself. Visit the Sacristy to ask the clergy for the official internal Cathedral stamp.</p>
+                    <div class="stamp-type">Type: Exclusive Clergy Stamp</div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Camino de Santiago Adventure | Sarria to Santiago de Compostela</p>
+        <p>📍 Galicia, Spain | <a href="#top">Back to Top</a></p>
+    </footer>
+
+</body>
+</html>
